@@ -31,14 +31,14 @@ This isn’t going to be a detailed VBA tutorial. There are already plenty of th
 First off, let’s talk about the code required to POST and GET. I wish I could tell you exactly from where I stole this, but suffice it to say, it’s pretty available though a simple Google search.
 
 First, you need to define a couple of variables:
-```vbscrpt
+```vb
 Dim objHTTP As Object
 Dim Json As String
 Dim result As String
 ```
 
 Then, we need to create our GET or POST object:
-```vbscript
+```vb
 Set objHTTP = CreateObject("MSXML2.ServerXMLHTTP")
 Url = "https://" & env & ".service-now.com/api/now/table/sys_properties?sysparm_fields=value&name=x_*company*_ssb_api.excel_version"
 objHTTP.Open "GET", Url, False
@@ -47,13 +47,13 @@ objHTTP.Open "GET", Url, False
 In our instance, this is all rolled into a Scoped App, so you'll end up replacing *company* with your own company. Also, you'll see the variable "env". This is normally where your subdomain for ServiceNow would be. Since I have versions of this for our Production as well as subproduction environments, I have a variable in place to make swapping between them easy. The API URL in this example GETs a property variable from ServiceNow to be sure the user is using the right version of the Interface. It's fairly basic version control, but it's been effective so far.
 
 Next, you'll set your Headers. We're using Basic Authentication. I've replaced our actual token with the lame word TOKEN:  
-```vbscript
+```vb
 objHTTP.SetRequestHeader "Content-Type", "application/json"
 objHTTP.SetRequestHeader "Authorization", "Basic TOKEN"
 ```
 
 Finally, you'll send it off and receive the response: 
-```vbscript
+```vb
 objHTTP.Send (Json)
 StatusNum = objHTTP.Status
 Status = objHTTP.StatusText
@@ -76,7 +76,7 @@ A few other features of the Excel Spreadsheet:
 ## The Scripted REST Endpoint
 
 Once the Excel file packages up the update and shoots it over to ServiceNow, the package is caught by a Scripted REST Endpoint. This Endpoint is pretty simple and consists of two parts:  
-```javascrpt
+```javascript
 (function process(/*RESTAPIRequest*/ request, /*RESTAPIResponse*/ response) {
     //Receive Asset Data
     var j = request.body.data;
@@ -99,12 +99,12 @@ Once the Excel file packages up the update and shoots it over to ServiceNow, the
     writer.writeString(JSON.stringify(statusReturned));
    
     })(request, response);
-    ```
+```
 
 Part 1 is where the Asset Data is received. We set the payload to variable "j", then pass it on to a script include for verification.
 
 Once the script include has completed the verification, it either passes the data off to the next step (and returns a standard Status 200), or kicks back one of a few custom error codes. Then, we move on to Part 2, which composes the response and sends it back to Excel. When Excel receives the response, it uses a simple if chain to decide to what to do next. It will either move on, or freeze and wait for the user to fix the data:  
-```vbscrpt
+```vb
 'Print Response
 Dim responseError As String
  
@@ -138,7 +138,7 @@ End If
 ## The Script Include
 
 The Script Include is where all the real work happens, at least on the verification side. For simplicity, we're going to stick with calling the payload j:  
-```javascrpt
+```javascript
 var j = request;
 var answer = {}; //Prepare response payload
                
