@@ -144,10 +144,10 @@ var answer = {}; //Prepare response payload
                
     gs.info('Starting process to add to Asset Movement Import Table');
     gs.debug('Script Include received payload: ' + JSON.stringify(j));
-    ```
+```
 
 Next we initialize a couple variables and start checking the data. Serial number is first because it's the most important:  
-```javascrpt
+```javascript
 //Initialize a couple variables before proceeding
 var valid = true;
 var userValid = false;
