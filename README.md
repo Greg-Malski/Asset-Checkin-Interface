@@ -31,11 +31,11 @@ This isn’t going to be a detailed VBA tutorial. There are already plenty of th
 First off, let’s talk about the code required to POST and GET. I wish I could tell you exactly from where I stole this, but suffice it to say, it’s pretty available though a simple Google search.
 
 First, you need to define a couple of variables:
-'''vbscrpt
+```vbscrpt
 Dim objHTTP As Object
 Dim Json As String
 Dim result As String
-'''
+```
 
 Then, we need to create our GET or POST object:
 
