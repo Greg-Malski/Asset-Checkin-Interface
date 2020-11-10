@@ -194,7 +194,7 @@ If all our checks pass, we push everything on to the next phase, then catch the 
 ```javascript
 //If we're all good, send the data on to the Transform Map
 if(valid == true){
-    var moveAsset = new GlideRecord('x_ihgih_ssb_api_ssb_checkin_landing');
+    var moveAsset = new GlideRecord('x_*company*_ssb_api_ssb_checkin_landing');
     moveAsset.initialize();
     moveAsset.u_machine = j.u_machine;
     moveAsset.u_action = j.u_action;
